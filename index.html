@@ -82,6 +82,13 @@
         /* padding-top: 13vh; */
       }
 
+      .content-wrap {
+        position: relative;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
       .watermark {
         position: absolute;
         inset: 0;
@@ -90,13 +97,13 @@
         justify-content: center;
         pointer-events: none;
         z-index: 0;
+        overflow: visible;
       }
       .watermark svg {
         width: clamp(300px, 55vw, 680px);
         height: auto;
         opacity: 0;
         animation: breathe 5s ease-in-out infinite;
-        margin-top: 10vh;
       }
 
       .inner {
@@ -114,7 +121,7 @@
 
       /* ── M icon logo ── */
       .logo-wrap {
-        width: clamp(280px, 55vw, 520px);
+        width: clamp(420px, 70vw, 860px);
         margin-bottom: 35px;
         opacity: 0.95;
       }
@@ -124,6 +131,16 @@
         display: block;
       }
 
+      @media (max-width: 640px) {
+        .logo-wrap {
+          width: 100vw;
+          margin-left: calc(50% - 50vw);
+          margin-right: calc(50% - 50vw);
+          margin-bottom: 16px;
+          padding: 20px;
+        }
+      }
+
       h1 {
         font-size: clamp(24px, 4vw, 38px);
         font-weight: 300;
@@ -131,7 +148,7 @@
         color: var(--lace);
         letter-spacing: 0.01em;
         line-height: 1.15;
-        margin-top: -32px;
+        /* margin-top: -32px; */
         margin-bottom: 16px;
       }
       p.sub {
@@ -284,101 +301,98 @@
     </style>
   </head>
   <body>
-    <div class="watermark">
-      <!--
-      ii geometry derived from Masii_Wordmark SVG (viewBox 0 0 649.59 266.16):
-      Each i = circle (r≈14.49, slightly wider than bar) + rounded-rect bar (w=26.28, h=51.13, rx=4.16)
-      Center gap between the two i's = 37.24 units on a 26.28-wide bar (ratio 1.417×)
-      Dot diameter / bar width ratio = 1.103 (dot is ~10% wider than bar)
-      This SVG is a faithful scaled reproduction of those proportions.
-    -->
-      <svg
-        viewBox="0 0 140 120"
-        xmlns="http://www.w3.org/2000/svg"
-        aria-hidden="true"
-      >
-        <!-- i left: dot + bar -->
-        <circle cx="43" cy="22" r="15.5" fill="#fff" />
-        <rect
-          x="29.7"
-          y="43"
-          width="26.6"
-          height="55"
-          rx="4.2"
-          ry="4.2"
-          fill="#fff"
-        />
-        <!-- i right: dot + bar -->
-        <circle cx="97" cy="22" r="15.5" fill="#fff" />
-        <rect
-          x="83.7"
-          y="43"
-          width="26.6"
-          height="55"
-          rx="4.2"
-          ry="4.2"
-          fill="#fff"
-        />
-      </svg>
-    </div>
     <div class="inner">
       <div class="logo-wrap">
-        <img
-          src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyBpZD0iTGF5ZXJfMSIgZGF0YS1uYW1lPSJMYXllciAxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2aWV3Qm94PSIwIDAgNzAyLjk0IDQ4OC44MiI+CiAgPGRlZnM+CiAgICA8c3R5bGU+CiAgICAgIC5jbHMtMSB7CiAgICAgICAgZmlsbDogdXJsKCNsaW5lYXItZ3JhZGllbnQpOwogICAgICB9CiAgICA8L3N0eWxlPgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJsaW5lYXItZ3JhZGllbnQiIHgxPSI4OC43MiIgeTE9IjE0Ni43MiIgeDI9IjU1Ny43NyIgeTI9IjMyMS4xMSIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPgogICAgICA8c3RvcCBvZmZzZXQ9Ii4xMSIgc3RvcC1jb2xvcj0iIzRkYmVmMSIvPgogICAgICA8c3RvcCBvZmZzZXQ9Ii4zMSIgc3RvcC1jb2xvcj0iI2FhZGJiOCIvPgogICAgICA8c3RvcCBvZmZzZXQ9Ii41OCIgc3RvcC1jb2xvcj0iI2UyYTdkNCIvPgogICAgICA8c3RvcCBvZmZzZXQ9Ii43NiIgc3RvcC1jb2xvcj0iI2EyNmJlYSIvPgogICAgICA8c3RvcCBvZmZzZXQ9Ii44OCIgc3RvcC1jb2xvcj0iIzcxNTBlOCIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiM0ZTRmZTgiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgPC9kZWZzPgogIDxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTU0MS4xOSwyMzguMTJoLTUxLjkzdi03MS40MmMwLTUuMTItNC4xMS05LjI2LTkuMTktOS4yNmgtMjcuOTVjLTguMDYsMC0xNS43NCwzLjUtMjEuMDcsOS41OWwtNTMuNjYsNjEuNDFjLTUuMjEsNS45Ny0xMi42Nyw5LjQyLTIwLjU0LDkuNTd2LTcxLjMxYzAtNS4xMi00LjExLTkuMjYtOS4xOS05LjI2aC0yNy45NWMtOC4wNiwwLTE1Ljc0LDMuNS0yMS4wNyw5LjU5bC01My42Niw2MS40MWMtNS4yMSw1Ljk3LTEyLjY3LDkuNDItMjAuNTQsOS41N3YtNzIuOTFjMC00LjIzLTMuNDMtNy42Ni03LjY2LTcuNjZoLTI3LjJjLTE4LjU4LDAtMzMuNjUsMTUuMDYtMzMuNjUsMzMuNjV2NTEuOTRjMCwzLjAxLDIuNDQsNS40NSw1LjQ1LDUuNDVoNTIuMjl2NzMuNjVjMCw1LjEyLDQuMTEsOS4yNiw5LjE5LDkuMjZoMTcuNjdjNy44NiwwLDE1LjM2LTMuMzIsMjAuNjgtOS4xNmw1OC44Mi02NC41OWM1LjMyLTUuODQsMTIuODItOS4xNiwyMC42OC05LjE2aDUuMzZ2NzMuNjVjMCw1LjEyLDQuMTEsOS4yNiw5LjE5LDkuMjZoMTcuNjdjNy44NiwwLDE1LjM2LTMuMzIsMjAuNjgtOS4xNmw1OC44Mi02NC41OWM1LjMyLTUuODQsMTIuODItOS4xNiwyMC42OC05LjE2aDUuMzZ2NzQuMzZjMCw0LjUzLDMuNjcsOC4yLDguMiw4LjJoMjYuNDNjMTguNzEsMCwzMy44OC0xNS4xNywzMy44OC0zMy44OHYtNTMuMjFjMC0zLjIxLTIuNi01LjgyLTUuODItNS44MloiLz4KPC9zdmc+"
-          alt="MASii"
-        />
-      </div>
-
-      <h1>Something is coming soon.</h1>
-      <p class="sub">Subscribe for updates</p>
-
-      <div class="form-wrap" id="formWrap">
-        <div class="form-group">
-          <div class="search-bar">
-            <input
-              type="text"
-              id="name"
-              placeholder="Name"
-              autocomplete="given-name"
-            />
-          </div>
-        </div>
-        <div class="form-group">
-          <div class="search-bar">
-            <input
-              type="email"
-              id="email"
-              placeholder="Email"
-              autocomplete="email"
-            />
-          </div>
-        </div>
-
-        <button class="cta-btn" id="ctaBtn" onclick="handleSubmit()">
-          <span class="btn-icon">
-            <!-- Bell / notify spark icon matching AI Mode aesthetic -->
-            <svg
-              viewBox="0 0 20 20"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="151.93 153.44 399.05 181.95"
+          role="img"
+          aria-label="MASii"
+          style="width: 100%; height: auto; display: block"
+        >
+          <defs>
+            <linearGradient
+              id="logo-gradient"
+              x1="88.72"
+              y1="146.72"
+              x2="557.77"
+              y2="321.11"
+              gradientUnits="userSpaceOnUse"
             >
-              <path
-                d="M10 2a6 6 0 0 0-6 6v3.17l-1.29 1.3A1 1 0 0 0 3.41 14H7a3 3 0 0 0 6 0h3.59a1 1 0 0 0 .7-1.71L16 11.17V8a6 6 0 0 0-6-6Zm0 14a1 1 0 0 1-1-1h2a1 1 0 0 1-1 1Z"
-                fill="#1a1a1a"
-              />
-            </svg>
-          </span>
-          Notify me
-        </button>
-
-        <p class="error-msg" id="errorMsg">
-          Something went wrong. Please try again.
-        </p>
+              <stop offset=".11" stop-color="#4dbef1" />
+              <stop offset=".31" stop-color="#aadbb8" />
+              <stop offset=".58" stop-color="#e2a7d4" />
+              <stop offset=".76" stop-color="#a26bea" />
+              <stop offset=".88" stop-color="#7150e8" />
+              <stop offset="1" stop-color="#4e4fe8" />
+            </linearGradient>
+          </defs>
+          <path
+            fill="url(#logo-gradient)"
+            d="M541.19,238.12h-51.93v-71.42c0-5.12-4.11-9.26-9.19-9.26h-27.95c-8.06,0-15.74,3.5-21.07,9.59l-53.66,61.41c-5.21,5.97-12.67,9.42-20.54,9.57v-71.31c0-5.12-4.11-9.26-9.19-9.26h-27.95c-8.06,0-15.74,3.5-21.07,9.59l-53.66,61.41c-5.21,5.97-12.67,9.42-20.54,9.57v-72.91c0-4.23-3.43-7.66-7.66-7.66h-27.2c-18.58,0-33.65,15.06-33.65,33.65v51.94c0,3.01,2.44,5.45,5.45,5.45h52.29v73.65c0,5.12,4.11,9.26,9.19,9.26h17.67c7.86,0,15.36-3.32,20.68-9.16l58.82-64.59c5.32-5.84,12.82-9.16,20.68-9.16h5.36v73.65c0,5.12,4.11,9.26,9.19,9.26h17.67c7.86,0,15.36-3.32,20.68-9.16l58.82-64.59c5.32-5.84,12.82-9.16,20.68-9.16h5.36v74.36c0,4.53,3.67,8.2,8.2,8.2h26.43c18.71,0,33.88-15.17,33.88-33.88v-53.21c0-3.21-2.6-5.82-5.82-5.82Z"
+          />
+        </svg>
       </div>
+      <div class="content-wrap">
+        <div class="watermark">
+          <svg viewBox="0 0 140 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <circle cx="43" cy="22" r="15.5" fill="#fff" />
+            <rect x="29.7" y="43" width="26.6" height="55" rx="4.2" ry="4.2" fill="#fff" />
+            <circle cx="97" cy="22" r="15.5" fill="#fff" />
+            <rect x="83.7" y="43" width="26.6" height="55" rx="4.2" ry="4.2" fill="#fff" />
+          </svg>
+        </div>
+        <h1>Something is coming soon.</h1>
+        <p class="sub">Subscribe for updates</p>
 
-      <div class="success" id="success">
-        <p>You're on the list.</p>
-        <span>We'll reach out when the time is right.</span>
+        <div class="form-wrap" id="formWrap">
+          <div class="form-group">
+            <div class="search-bar">
+              <input
+                type="text"
+                id="name"
+                placeholder="Name"
+                autocomplete="name"
+              />
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="search-bar">
+              <input
+                type="email"
+                id="email"
+                placeholder="Email"
+                autocomplete="email"
+              />
+            </div>
+          </div>
+
+          <button class="cta-btn" id="ctaBtn" onclick="handleSubmit()">
+            <span class="btn-icon">
+              <!-- Bell / notify spark icon matching AI Mode aesthetic -->
+              <svg
+                viewBox="0 0 20 20"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M10 2a6 6 0 0 0-6 6v3.17l-1.29 1.3A1 1 0 0 0 3.41 14H7a3 3 0 0 0 6 0h3.59a1 1 0 0 0 .7-1.71L16 11.17V8a6 6 0 0 0-6-6Zm0 14a1 1 0 0 1-1-1h2a1 1 0 0 1-1 1Z"
+                  fill="#1a1a1a"
+                />
+              </svg>
+            </span>
+            Notify me
+          </button>
+
+          <p class="error-msg" id="errorMsg">
+            Something went wrong. Please try again.
+          </p>
+        </div>
+
+        <div class="success" id="success">
+          <p>You're on the list.</p>
+          <span>We'll reach out when the time is right.</span>
+        </div>
       </div>
     </div>
 
