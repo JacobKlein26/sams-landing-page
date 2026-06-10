@@ -72,14 +72,17 @@
       body {
         background: #000000;
         position: relative;
-        overflow: hidden;
+        overflow-x: hidden;
+        overflow-y: auto;
         font-family: "Cormorant Garamond", Georgia, serif;
         min-height: 100vh;
         display: flex;
-        /* align-items: flex-start; */
         align-items: center;
         justify-content: center;
-        /* padding-top: 13vh; */
+        padding:
+          max(14px, calc(env(safe-area-inset-top, 0px) + 8px))
+          16px
+          28px;
       }
 
       .content-wrap {
@@ -121,7 +124,7 @@
 
       /* ── M icon logo ── */
       .logo-wrap {
-        width: clamp(420px, 70vw, 860px);
+        width: clamp(320px, 64vw, 760px);
         margin-bottom: 35px;
         opacity: 0.95;
       }
@@ -138,6 +141,26 @@
           margin-right: calc(50% - 50vw);
           margin-bottom: 16px;
           padding: 20px;
+        }
+      }
+
+      /* Step the logo size down on narrower laptop/tablet widths */
+      @media (max-width: 1100px) {
+        .logo-wrap {
+          width: clamp(300px, 68vw, 700px);
+        }
+      }
+
+      @media (max-width: 860px) {
+        .logo-wrap {
+          width: clamp(280px, 74vw, 620px);
+        }
+      }
+
+      /* Short viewports can clip centered content; top-align in that case */
+      @media (max-height: 860px) {
+        body {
+          align-items: flex-start;
         }
       }
 
