@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MASii — Coming Soon</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+
+    :root {
+      --violet:    #3C183C;
+      --periwinkle:#D2CBFE;
+      --lace:      #FFF8EB;
+      --lime:      #CDFC8A;
+    }
+
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      20%      { transform: translateX(-8px); }
+      40%      { transform: translateX(8px); }
+      60%      { transform: translateX(-6px); }
+      80%      { transform: translateX(6px); }
+    }
+    @keyframes breathe {
+      0%,100% { opacity: 0.04; }
+      50%      { opacity: 0.10; }
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    body {
+      background: var(--violet);
+      position: relative;
+      overflow: hidden;
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .watermark {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .watermark span {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(280px, 40vw, 520px);
+      font-weight: 300;
+      color: #ffffff;
+      letter-spacing: -0.04em;
+      line-height: 1;
+      animation: breathe 5s ease-in-out infinite;
+    }
+
+    .inner {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 48px 24px;
+      width: 100%;
+      max-width: 560px;
+      animation: fadeUp 0.9s cubic-bezier(.16,1,.3,1) both;
+    }
+
+    .logo-wrap {
+      width: clamp(140px, 22vw, 200px);
+      margin-bottom: 56px;
+      opacity: 0.9;
+    }
+    .logo-wrap img { width: 100%; height: auto; display: block; }
+
+    h1 {
+      font-size: clamp(34px, 6vw, 56px);
+      font-weight: 300;
+      font-style: italic;
+      color: var(--lace);
+      letter-spacing: 0.01em;
+      line-height: 1.15;
+      margin-bottom: 16px;
+    }
+    p.sub {
+      font-size: clamp(14px, 2vw, 17px);
+      font-weight: 300;
+      color: var(--periwinkle);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 48px;
+      opacity: 0.8;
+    }
+
+    .form-wrap { width: 100%; max-width: 400px; }
+    .form-group { margin-bottom: 16px; }
+    input {
+      width: 100%;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid rgba(210,203,254,0.35);
+      color: var(--lace);
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 18px;
+      font-weight: 300;
+      padding: 12px 0;
+      outline: none;
+      transition: border-color 0.25s;
+      letter-spacing: 0.03em;
+    }
+    input::placeholder { color: rgba(210,203,254,0.4); }
+    input:focus { border-bottom-color: var(--lime); }
+
+    .cta-btn {
+      margin-top: 32px;
+      width: 100%;
+      background: var(--lime);
+      color: var(--violet);
+      border: none;
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 18px 32px;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.15s;
+    }
+    .cta-btn:hover:not(:disabled) { opacity: 0.88; transform: translateY(-1px); }
+    .cta-btn:active { transform: translateY(0); }
+    .cta-btn:disabled { opacity: 0.5; cursor: default; }
+
+    .disclaimer {
+      margin-top: 20px;
+      font-size: 12px;
+      color: rgba(210,203,254,0.35);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .error-msg {
+      margin-top: 14px;
+      font-size: 13px;
+      color: rgba(255,120,120,0.85);
+      letter-spacing: 0.04em;
+      display: none;
+    }
+    .error-msg.show { display: block; }
+
+    .success {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+    .success.show { display: flex; }
+    .success p {
+      font-size: clamp(22px, 4vw, 32px);
+      font-weight: 300;
+      font-style: italic;
+      color: var(--lime);
+      letter-spacing: 0.02em;
+    }
+    .success span {
+      font-size: 13px;
+      color: rgba(210,203,254,0.4);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .watermark span { animation: none; opacity: 0.06; }
+      .inner { animation: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="watermark"><span>ii</span></div>
+  <div class="inner">
+    <div class="logo-wrap">
+      <img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyBpZD0iTGF5ZXJfMSIgZGF0YS1uYW1lPSJMYXllciAxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2aWV3Qm94PSIwIDAgMTE2MC41MSAzMTkuNDkiPgogIDxkZWZzPgogICAgPHN0eWxlPgogICAgICAuY2xzLTEgewogICAgICAgIGZpbGw6IHVybCgjbGluZWFyLWdyYWRpZW50KTsKICAgICAgfQogICAgPC9zdHlsZT4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0ibGluZWFyLWdyYWRpZW50IiB4MT0iMjcuOTYiIHkxPSI3OC43MSIgeDI9IjQxNy4wMyIgeTI9IjIyMy4zNyIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPgogICAgICA8c3RvcCBvZmZzZXQ9Ii4xMSIgc3RvcC1jb2xvcj0iIzRkYmVmMSIvPgogICAgICA8c3RvcCBvZmZzZXQ9Ii4zMSIgc3RvcC1jb2xvcj0iI2FhZGJiOCIvPgogICAgICA8c3RvcCBvZmZzZXQ9Ii41OCIgc3RvcC1jb2xvcj0iI2UyYTdkNCIvPgogICAgICA8c3RvcCBvZmZzZXQ9Ii43NiIgc3RvcC1jb2xvcj0iI2EyNmJlYSIvPgogICAgICA8c3RvcCBvZmZzZXQ9Ii44OCIgc3RvcC1jb2xvcj0iIzcxNTBlOCIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiM0ZTRmZTgiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgPC9kZWZzPgogIDxnPgogICAgPHBhdGggZD0iTTU3Mi43NCwyMjIuNTloLTIzLjcyYy0yLjQ5LDAtNC43My0xLjUtNS42OC0zLjc5bC0yNC4yNi01OC42M2MtMi41Ny02LjIxLTExLjgyLTQuMzctMTEuODIsMi4zNXY1My45NGMwLDMuMzktMi43NSw2LjE0LTYuMTQsNi4xNGgtMjAuOWMtMy4zOSwwLTYuMTQtMi43NS02LjE0LTYuMTR2LTExMC41OGMwLTMuMzksMi43NS02LjE0LDYuMTQtNi4xNGg0Ni43M2MyLjQ1LDAsNC42NywxLjQ2LDUuNjQsMy43MWwyNC42Miw1Ny4yYzIuMTQsNC45OCw5LjIyLDQuOTQsMTEuMzEtLjA2bDIzLjg4LTU3LjA4Yy45Ni0yLjI4LDMuMTktMy43Nyw1LjY3LTMuNzdoNDQuMzZjMy4zOSwwLDYuMTQsMi43NSw2LjE0LDYuMTR2MTEwLjU4YzAsMy4zOS0yLjc1LDYuMTQtNi4xNCw2LjE0aC0yMS45N2MtMy4zOSwwLTYuMTQtMi43NS02LjE0LTYuMTR2LTUzLjhjMC02LjczLTkuMjYtOC41Ni0xMS44Mi0yLjM0bC0yNC4wOCw1OC40OGMtLjk1LDIuMy0zLjE5LDMuOC01LjY4LDMuOFoiLz4KICAgIDxwYXRoIGQ9Ik04MzAuNjgsMTc5LjYxaDI4LjUzYzIuNjgsMCw1LDEuNzcsNS43OCw0LjMzLDEuNzksNS44Myw4LjQsMTAuNTEsMzIuMTYsMTAuNTEsMjguNDgsMCwzNC4yMi00Ljc5LDM0LjIyLTExLjk3LDAtMy41OS0yLjE1LTYuNy05LjgxLTcuNjYtOS4wOS0xLjItMjIuOTgtMS4yLTM1LjktMS45MS0yMy4yMS0uOTYtMzkuOTctMy41OS00OC44Mi04Ljg1LTguODYtNS4yNy0xMi42OC0xNC4xMi0xMi42OC0yNC4xNywwLTI0Ljg5LDI1LjYxLTQxLjY0LDczLTQxLjY0LDUxLjAyLDAsNjYuNiwxNS42OCw2OS4yMiwzNS41Ni40OCwzLjYxLTIuMzYsNi44MS02LDYuODFoLTI4LjU1Yy0yLjY5LDAtNS4xMS0xLjc3LTUuOC00LjM4LTEuNzItNi40Ny03Ljk2LTExLjE4LTI3LjY3LTExLjE4LTIzLjQ1LDAtMzEuNTksNC43OS0zMS41OSwxMi4yMSwwLDQuNTUsMi42Myw2Ljk0LDExLjI1LDguMzgsOC4xNCwxLjIsMjAuMzQsMS4yLDM2LjE0LDIuMTUsMTcuNzEuOTYsMzMuNzUsMi4zOSw0My41Niw2Ljk0LDExLjAxLDUuMDMsMTYuMjcsMTQuMzYsMTYuMjcsMjYuMzMsMCwxOS4xNS0xMy40LDQwLjIxLTc2LjgyLDQwLjIxLTU1LjQxLDAtNjkuNzItMTguMDktNzIuNDUtMzQuNjMtLjYxLTMuNjgsMi4yNS03LjAxLDUuOTctNy4wMVoiLz4KICAgIDxwYXRoIGQ9Ik03MzcuMjMsOTguMjRjLTQ2LjkyLDAtNjguMTgsMTQuNDUtNzIuMjUsMzMuNTEtLjc5LDMuNywyLjE1LDcuMTcsNS45NCw3LjE3aDI4LjY0YzIuNDQsMCw0LjY3LTEuNDYsNS41Ny0zLjczLDIuMTgtNS41LDEwLjA1LTEwLjE2LDMwLjQzLTEwLjE2LDI3LjA0LDAsMzYuNjEsNi40NywzNi42MSwyMi41MXYxLjY4aC02Ni4zYy0zMy4yNiwwLTQ1LjQ3LDE1LjA4LTQ1LjQ3LDM0LjQ1LDAsMTcsMTIuOTMsMzcuNTgsNTYuNSwzNy41OCwzNy4zMywwLDUxLjQ1LTExLjczLDU2LjIzLTI4LjcyaC4yNWMwLDUuNTktLjQxLDEzLjA5LS44MiwxOS45My0uMjEsMy40NywyLjU1LDYuNCw2LjAzLDYuNGgzMC4xNWMzLjM0LDAsNi4wNC0yLjcxLDYuMDQtNi4wNHYtNjEuMjFjMC0zNC4yMi0yNi4xLTUzLjM3LTc3LjU1LTUzLjM3Wk03NzIuMTcsMTcyLjE5YzAsOS44Mi0xNC42LDIyLjI2LTQzLjMyLDIyLjI2LTIyLjUxLDAtMzAuNjMtNS43NS0zMC42My0xMy4xNnM2LjIxLTEwLjA1LDIwLjU4LTEwLjA1aDUzLjM3di45NloiLz4KICAgIDxjaXJjbGUgY3g9IjEwMDYuNDQiIGN5PSIxMjEuMjYiIHI9IjE5LjcxIi8+CiAgICA8cmVjdCB4PSI5ODguNTciIHk9IjE0OS40NyIgd2lkdGg9IjM1Ljc0IiBoZWlnaHQ9IjY5LjUzIiByeD0iNC4xNiIgcnk9IjQuMTYiLz4KICAgIDxjaXJjbGUgY3g9IjEwNTcuMDgiIGN5PSIxMjEuMjYiIHI9IjE5LjcxIi8+CiAgICA8cmVjdCB4PSIxMDM5LjIxIiB5PSIxNDkuNDciIHdpZHRoPSIzNS43NCIgaGVpZ2h0PSI2OS41MyIgcng9IjQuMTYiIHJ5PSI0LjE2Ii8+CiAgPC9nPgogIDxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTQwMy4yNywxNTQuNTJoLTQzLjA3di01OS4yNGMwLTQuMjQtMy40MS03LjY4LTcuNjItNy42OGgtMjMuMTljLTYuNjksMC0xMy4wNSwyLjktMTcuNDcsNy45NmwtNDQuNTEsNTAuOTRjLTQuMzIsNC45NS0xMC41MSw3LjgxLTE3LjA0LDcuOTN2LTU5LjE1YzAtNC4yNC0zLjQxLTcuNjgtNy42Mi03LjY4aC0yMy4xOWMtNi42OSwwLTEzLjA1LDIuOS0xNy40Nyw3Ljk2bC00NC41MSw1MC45NGMtNC4zMiw0Ljk1LTEwLjUxLDcuODEtMTcuMDQsNy45M3YtNjAuNDhjMC0zLjUxLTIuODQtNi4zNS02LjM1LTYuMzVoLTIyLjU2Yy0xNS40MSwwLTI3LjkxLDEyLjUtMjcuOTEsMjcuOTF2NDMuMDhjMCwyLjUsMi4wMiw0LjUyLDQuNTIsNC41Mmg0My4zOHY2MS4wOWMwLDQuMjQsMy40MSw3LjY4LDcuNjIsNy42OGgxNC42NmM2LjUyLDAsMTIuNzQtMi43NiwxNy4xNS03LjZsNDguNzktNTMuNThjNC40MS00Ljg0LDEwLjYzLTcuNiwxNy4xNS03LjZoNC40NXY2MS4wOWMwLDQuMjQsMy40MSw3LjY4LDcuNjIsNy42OGgxNC42NmM2LjUyLDAsMTIuNzQtMi43NiwxNy4xNS03LjZsNDguNzktNTMuNThjNC40MS00Ljg0LDEwLjYzLTcuNiwxNy4xNS03LjZoNC40NXY2MS42OGMwLDMuNzYsMy4wNCw2LjgsNi44LDYuOGgyMS45MmMxNS41MiwwLDI4LjEtMTIuNTgsMjguMS0yOC4xdi00NC4xNGMwLTIuNjYtMi4xNi00LjgyLTQuODItNC44MloiLz4KPC9zdmc+" alt="MASii" />
+    </div>
+
+    <h1>Something is coming.</h1>
+    <p class="sub">No spam. No explanation. Not yet.</p>
+
+    <div class="form-wrap" id="formWrap">
+      <div class="form-group">
+        <input type="text" id="name" placeholder="Your name" autocomplete="given-name" />
+      </div>
+      <div class="form-group">
+        <input type="email" id="email" placeholder="Your email" autocomplete="email" />
+      </div>
+      <button class="cta-btn" id="ctaBtn" onclick="handleSubmit()">Notify me</button>
+      <p class="error-msg" id="errorMsg">Something went wrong. Please try again.</p>
+      <p class="disclaimer">No spam. No explanation. Not yet.</p>
+    </div>
+
+    <div class="success" id="success">
+      <p>You're on the list.</p>
+      <span>We'll reach out when the time is right.</span>
+    </div>
+  </div>
+
+  <script>
+    async function handleSubmit() {
+      const name  = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+
+      // Validate name and email presence + basic email format
+      if (!name || !email || !email.includes('@')) {
+        const form = document.getElementById('formWrap');
+        form.style.animation = 'none';
+        form.offsetHeight; // force reflow to restart animation
+        form.style.animation = 'shake 0.35s ease';
+        return;
+      }
+
+      const btn = document.getElementById('ctaBtn');
+      btn.disabled = true;
+      btn.textContent = '...';
+
+      const errorMsg = document.getElementById('errorMsg');
+      errorMsg.classList.remove('show');
+
+      try {
+        const res = await fetch('https://get-brevo-key.jacobk.workers.dev', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, email }),
+        });
+
+        if (res.ok) {
+          // Success — hide form, show confirmation
+          document.getElementById('formWrap').style.display = 'none';
+          document.getElementById('success').classList.add('show');
+        } else {
+          // Non-200 response — re-enable button, show error
+          btn.disabled = false;
+          btn.textContent = 'Notify me';
+          errorMsg.classList.add('show');
+        }
+      } catch {
+        // Network / fetch error — re-enable button, show error
+        btn.disabled = false;
+        btn.textContent = 'Notify me';
+        errorMsg.classList.add('show');
+      }
+    }
+
+    // Enter key submits form
+    document.querySelectorAll('input').forEach(input => {
+      input.addEventListener('keydown', e => {
+        if (e.key === 'Enter') handleSubmit();
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MASii — Coming Soon</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+
+    :root {
+      --navy:    #030335;
+      --indigo:  #1E38D1;
+      --flower:  #5497F3;
+      --cyan:    #D5F2FD;
+    }
+
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      20%      { transform: translateX(-8px); }
+      40%      { transform: translateX(8px); }
+      60%      { transform: translateX(-6px); }
+      80%      { transform: translateX(6px); }
+    }
+    @keyframes fadeInC {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    body {
+      background: var(--navy);
+      position: relative;
+      overflow: hidden;
+      font-family: 'Space Grotesk', system-ui, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Dot-grid texture */
+    body::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(rgba(84,151,243,0.18) 1px, transparent 1px);
+      background-size: 28px 28px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Vignette */
+    body::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 70% 70% at 50% 50%, transparent 40%, var(--navy) 100%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .inner {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 48px 24px;
+      width: 100%;
+      max-width: 560px;
+      animation: fadeInC 0.9s cubic-bezier(.16,1,.3,1) both;
+    }
+
+    .logo-wrap {
+      width: clamp(130px, 20vw, 180px);
+      margin-bottom: 40px;
+      opacity: 0.9;
+    }
+    .logo-wrap img { width: 100%; height: auto; display: block; }
+
+    h1 {
+      font-size: clamp(28px, 5vw, 46px);
+      font-weight: 300;
+      color: var(--cyan);
+      letter-spacing: -0.01em;
+      line-height: 1.2;
+      margin-bottom: 12px;
+    }
+    p.sub {
+      font-size: clamp(13px, 1.8vw, 15px);
+      font-weight: 300;
+      color: rgba(213,242,253,0.45);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 48px;
+    }
+
+    .form-wrap { width: 100%; max-width: 400px; }
+    .form-group { margin-bottom: 14px; }
+    input {
+      width: 100%;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(84,151,243,0.2);
+      color: var(--cyan);
+      font-family: 'Space Grotesk', system-ui, sans-serif;
+      font-size: 15px;
+      font-weight: 300;
+      padding: 14px 18px;
+      outline: none;
+      transition: border-color 0.2s, background 0.2s;
+      border-radius: 4px;
+      letter-spacing: 0.02em;
+    }
+    input::placeholder { color: rgba(213,242,253,0.22); }
+    input:focus {
+      border-color: var(--flower);
+      background: rgba(84,151,243,0.07);
+    }
+
+    .cta-btn {
+      margin-top: 24px;
+      width: 100%;
+      background: var(--indigo);
+      color: #fff;
+      border: none;
+      font-family: 'Space Grotesk', system-ui, sans-serif;
+      font-size: 15px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 17px 32px;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .cta-btn:hover:not(:disabled) { background: #2544e8; transform: translateY(-1px); }
+    .cta-btn:active { transform: translateY(0); }
+    .cta-btn:disabled { opacity: 0.5; cursor: default; }
+
+    .disclaimer {
+      margin-top: 18px;
+      font-size: 12px;
+      color: rgba(213,242,253,0.22);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .error-msg {
+      margin-top: 14px;
+      font-size: 13px;
+      color: rgba(255,140,140,0.85);
+      letter-spacing: 0.03em;
+      display: none;
+    }
+    .error-msg.show { display: block; }
+
+    .success {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+    .success.show { display: flex; }
+    .success p {
+      font-size: clamp(20px, 3.5vw, 28px);
+      font-weight: 300;
+      color: var(--cyan);
+      letter-spacing: -0.01em;
+    }
+    .success span {
+      font-size: 12px;
+      color: rgba(213,242,253,0.3);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .inner { animation: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="inner">
+    <div class="logo-wrap">
+      <img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyBpZD0iTGF5ZXJfMSIgZGF0YS1uYW1lPSJMYXllciAxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMTYwLjUxIDMxOS40OSI+CiAgPGRlZnM+CiAgICA8c3R5bGU+CiAgICAgIC5jbHMtMSB7CiAgICAgICAgZmlsbDogI2ZmZjsKICAgICAgfQogICAgPC9zdHlsZT4KICA8L2RlZnM+CiAgPGc+CiAgICA8cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik01NzIuNzQsMjIyLjU5aC0yMy43MmMtMi40OSwwLTQuNzMtMS41LTUuNjgtMy43OWwtMjQuMjYtNTguNjNjLTIuNTctNi4yMS0xMS44Mi00LjM3LTExLjgyLDIuMzV2NTMuOTRjMCwzLjM5LTIuNzUsNi4xNC02LjE0LDYuMTRoLTIwLjljLTMuMzksMC02LjE0LTIuNzUtNi4xNC02LjE0di0xMTAuNThjMC0zLjM5LDIuNzUtNi4xNCw2LjE0LTYuMTRoNDYuNzNjMi40NSwwLDQuNjcsMS40Niw1LjY0LDMuNzFsMjQuNjIsNTcuMmMyLjE0LDQuOTgsOS4yMiw0Ljk0LDExLjMxLS4wNmwyMy44OC01Ny4wOGMuOTYtMi4yOCwzLjE5LTMuNzcsNS42Ny0zLjc3aDQ0LjM2YzMuMzksMCw2LjE0LDIuNzUsNi4xNCw2LjE0djExMC41OGMwLDMuMzktMi43NSw2LjE0LTYuMTQsNi4xNGgtMjEuOTdjLTMuMzksMC02LjE0LTIuNzUtNi4xNC02LjE0di01My44YzAtNi43My05LjI2LTguNTYtMTEuODItMi4zNGwtMjQuMDgsNTguNDhjLS45NSwyLjMtMy4xOSwzLjgtNS42OCwzLjhaIi8+CiAgICA8cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik04MzAuNjgsMTc5LjYxaDI4LjUzYzIuNjgsMCw1LDEuNzcsNS43OCw0LjMzLDEuNzksNS44Myw4LjQsMTAuNTEsMzIuMTYsMTAuNTEsMjguNDgsMCwzNC4yMi00Ljc5LDM0LjIyLTExLjk3LDAtMy41OS0yLjE1LTYuNy05LjgxLTcuNjYtOS4wOS0xLjItMjIuOTgtMS4yLTM1LjktMS45MS0yMy4yMS0uOTYtMzkuOTctMy41OS00OC44Mi04Ljg1LTguODYtNS4yNy0xMi42OC0xNC4xMi0xMi42OC0yNC4xNywwLTI0Ljg5LDI1LjYxLTQxLjY0LDczLTQxLjY0LDUxLjAyLDAsNjYuNiwxNS42OCw2OS4yMiwzNS41Ni40OCwzLjYxLTIuMzYsNi44MS02LDYuODFoLTI4LjU1Yy0yLjY5LDAtNS4xMS0xLjc3LTUuOC00LjM4LTEuNzItNi40Ny03Ljk2LTExLjE4LTI3LjY3LTExLjE4LTIzLjQ1LDAtMzEuNTksNC43OS0zMS41OSwxMi4yMSwwLDQuNTUsMi42Myw2Ljk0LDExLjI1LDguMzgsOC4xNCwxLjIsMjAuMzQsMS4yLDM2LjE0LDIuMTUsMTcuNzEuOTYsMzMuNzUsMi4zOSw0My41Niw2Ljk0LDExLjAxLDUuMDMsMTYuMjcsMTQuMzYsMTYuMjcsMjYuMzMsMCwxOS4xNS0xMy40LDQwLjIxLTc2LjgyLDQwLjIxLTU1LjQxLDAtNjkuNzItMTguMDktNzIuNDUtMzQuNjMtLjYxLTMuNjgsMi4yNS03LjAxLDUuOTctNy4wMVoiLz4KICAgIDxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTczNy4yMyw5OC4yNGMtNDYuOTIsMC02OC4xOCwxNC40NS03Mi4yNSwzMy41MS0uNzksMy43LDIuMTUsNy4xNyw1Ljk0LDcuMTdoMjguNjRjMi40NCwwLDQuNjctMS40Niw1LjU3LTMuNzMsMi4xOC01LjUsMTAuMDUtMTAuMTYsMzAuNDMtMTAuMTYsMjcuMDQsMCwzNi42MSw2LjQ3LDM2LjYxLDIyLjUxdjEuNjhoLTY2LjNjLTMzLjI2LDAtNDUuNDcsMTUuMDgtNDUuNDcsMzQuNDUsMCwxNywxMi45MywzNy41OCw1Ni41LDM3LjU4LDM3LjMzLDAsNTEuNDUtMTEuNzMsNTYuMjMtMjguNzJoLjI1YzAsNS41OS0uNDEsMTMuMDktLjgyLDE5LjkzLS4yMSwzLjQ3LDIuNTUsNi40LDYuMDMsNi40aDMwLjE1YzMuMzQsMCw2LjA0LTIuNzEsNi4wNC02LjA0di02MS4yMWMwLTM0LjIyLTI2LjEtNTMuMzctNzcuNTUtNTMuMzdaTTc3Mi4xNywxNzIuMTljMCw5LjgyLTE0LjYsMjIuMjYtNDMuMzIsMjIuMjYtMjIuNTEsMC0zMC42My01Ljc1LTMwLjYzLTEzLjE2czYuMjEtMTAuMDUsMjAuNTgtMTAuMDVoNTMuMzd2Ljk2WiIvPgogICAgPGNpcmNsZSBjbGFzcz0iY2xzLTEiIGN4PSIxMDA2LjQ0IiBjeT0iMTIxLjI2IiByPSIxOS43MSIvPgogICAgPHJlY3QgY2xhc3M9ImNscy0xIiB4PSI5ODguNTciIHk9IjE0OS40NyIgd2lkdGg9IjM1Ljc0IiBoZWlnaHQ9IjY5LjUzIiByeD0iNC4xNiIgcnk9IjQuMTYiLz4KICAgIDxjaXJjbGUgY2xhc3M9ImNscy0xIiBjeD0iMTA1Ny4wOCIgY3k9IjEyMS4yNiIgcj0iMTkuNzEiLz4KICAgIDxyZWN0IGNsYXNzPSJjbHMtMSIgeD0iMTAzOS4yMSIgeT0iMTQ5LjQ3IiB3aWR0aD0iMzUuNzQiIGhlaWdodD0iNjkuNTMiIHJ4PSI0LjE2IiByeT0iNC4xNiIvPgogIDwvZz4KICA8cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik00MDMuMjcsMTU0LjUyaC00My4wN3YtNTkuMjRjMC00LjI0LTMuNDEtNy42OC03LjYyLTcuNjhoLTIzLjE5Yy02LjY5LDAtMTMuMDUsMi45LTE3LjQ3LDcuOTZsLTQ0LjUxLDUwLjk0Yy00LjMyLDQuOTUtMTAuNTEsNy44MS0xNy4wNCw3Ljkzdi01OS4xNWMwLTQuMjQtMy40MS03LjY4LTcuNjItNy42OGgtMjMuMTljLTYuNjksMC0xMy4wNSwyLjktMTcuNDcsNy45NmwtNDQuNTEsNTAuOTRjLTQuMzIsNC45NS0xMC41MSw3LjgxLTE3LjA0LDcuOTN2LTYwLjQ4YzAtMy41MS0yLjg0LTYuMzUtNi4zNS02LjM1aC0yMi41NmMtMTUuNDEsMC0yNy45MSwxMi41LTI3LjkxLDI3LjkxdjQzLjA4YzAsMi41LDIuMDIsNC41Miw0LjUyLDQuNTJoNDMuMzh2NjEuMDljMCw0LjI0LDMuNDEsNy42OCw3LjYyLDcuNjhoMTQuNjZjNi41MiwwLDEyLjc0LTIuNzYsMTcuMTUtNy42bDQ4Ljc5LTUzLjU4YzQuNDEtNC44NCwxMC42My03LjYsMTcuMTUtNy42aDQuNDV2NjEuMDljMCw0LjI0LDMuNDEsNy42OCw3LjYyLDcuNjhoMTQuNjZjNi41MiwwLDEyLjc0LTIuNzYsMTcuMTUtNy42bDQ4Ljc5LTUzLjU4YzQuNDEtNC44NCwxMC42My03LjYsMTcuMTUtNy42aDQuNDV2NjEuNjhjMCwzLjc2LDMuMDQsNi44LDYuOCw2LjhoMjEuOTJjMTUuNTIsMCwyOC4xLTEyLjU4LDI4LjEtMjguMXYtNDQuMTRjMC0yLjY2LTIuMTYtNC44Mi00LjgyLTQuODJaIi8+Cjwvc3ZnPg==" alt="MASii" />
+    </div>
+
+    <h1>Be first to know.</h1>
+    <p class="sub">No noise. Just the signal when it matters.</p>
+
+    <div class="form-wrap" id="formWrap">
+      <div class="form-group">
+        <input type="text" id="name" placeholder="Your name" autocomplete="given-name" />
+      </div>
+      <div class="form-group">
+        <input type="email" id="email" placeholder="Your email" autocomplete="email" />
+      </div>
+      <button class="cta-btn" id="ctaBtn" onclick="handleSubmit()">Get early access</button>
+      <p class="error-msg" id="errorMsg">Something went wrong. Please try again.</p>
+      <p class="disclaimer">No noise. Just the signal when it matters.</p>
+    </div>
+
+    <div class="success" id="success">
+      <p>Signal received.</p>
+      <span>You'll hear from us when it counts.</span>
+    </div>
+  </div>
+
+  <script>
+    async function handleSubmit() {
+      const name  = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+
+      // Validate name and email presence + basic email format
+      if (!name || !email || !email.includes('@')) {
+        const form = document.getElementById('formWrap');
+        form.style.animation = 'none';
+        form.offsetHeight; // force reflow to restart animation
+        form.style.animation = 'shake 0.35s ease';
+        return;
+      }
+
+      const btn = document.getElementById('ctaBtn');
+      btn.disabled = true;
+      btn.textContent = '...';
+
+      const errorMsg = document.getElementById('errorMsg');
+      errorMsg.classList.remove('show');
+
+      try {
+        const res = await fetch('https://get-brevo-key.jacobk.workers.dev', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, email }),
+        });
+
+        if (res.ok) {
+          // Success — hide form, show confirmation
+          document.getElementById('formWrap').style.display = 'none';
+          document.getElementById('success').classList.add('show');
+        } else {
+          // Non-200 response — re-enable button, show error
+          btn.disabled = false;
+          btn.textContent = 'Get early access';
+          errorMsg.classList.add('show');
+        }
+      } catch {
+        // Network / fetch error — re-enable button, show error
+        btn.disabled = false;
+        btn.textContent = 'Get early access';
+        errorMsg.classList.add('show');
+      }
+    }
+
+    // Enter key submits form
+    document.querySelectorAll('input').forEach(input => {
+      input.addEventListener('keydown', e => {
+        if (e.key === 'Enter') handleSubmit();
+      });
+    });
+  </script>
+</body>
+</html>
