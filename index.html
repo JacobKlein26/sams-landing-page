@@ -227,7 +227,8 @@
         /* font-family: -apple-system, "Segoe UI", Arial, sans-serif; */
         font-size: 16px;
         font-weight: 400;
-        color: #1a1a1a;
+        color: white;
+        /* color: #1a1a1a; */
         letter-spacing: 0;
         padding: 0;
       }
@@ -307,12 +308,14 @@
         display: flex;
       }
       .success p {
-        font-size: clamp(22px, 4vw, 32px);
-        font-weight: 300;
+        /* font-size: clamp(22px, 4vw, 32px); */
+        font-size: clamp(20px, 3.8vw, 30px);
+        font-weight: 700;
         /* font-style: italic; */
         /* color: var(--lime);  */
-        color: white; 
+        color: white;
         letter-spacing: 0.02em;
+        margin-top: 12px;
       }
       .success span {
         font-size: 13px;
@@ -418,7 +421,7 @@
               </svg>
             </span>
             <!-- Notify me -->
-             Register for early access
+             REGISTER FOR EARLY ACCESS
           </button>
 
           <p class="error-msg" id="errorMsg">
@@ -427,7 +430,7 @@
         </div>
 
         <div class="success" id="success">
-          <p>You're in!</p>
+          <p>YOU'RE IN</p>
           <span>Watch this space.</span>
         </div>
       </div>
@@ -470,13 +473,13 @@
           } else {
             // Non-200 response — re-enable button, restore label, show error
             btn.disabled = false;
-            btn.lastChild.textContent = " Notify me";
+            btn.lastChild.textContent = " REGISTER FOR EARLY ACCESS";
             errorMsg.classList.add("show");
           }
         } catch {
           // Network / fetch error — re-enable button, restore label, show error
           btn.disabled = false;
-          btn.lastChild.textContent = " Notify me";
+          btn.lastChild.textContent = " REGISTER FOR EARLY ACCESS";
           errorMsg.classList.add("show");
         }
       }
