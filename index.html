@@ -460,7 +460,8 @@
         errorMsg.classList.remove("show");
 
         try {
-          const res = await fetch("https://get-brevo-key.jacobk.workers.dev", {
+          // const res = await fetch("https://get-brevo-key.jacobk.workers.dev", {
+          const res = await fetch("https://loop-sign-up-proxy.jacobk.workers.dev", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ name, email }),
