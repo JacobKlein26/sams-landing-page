@@ -6,36 +6,34 @@
     <mj-font name="Instrument Sans" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@700&display=swap" />
     <mj-attributes>
       <mj-all font-family="'Manrope', -apple-system, 'Segoe UI', Arial, Helvetica, sans-serif" />
+
       <mj-text color="#FFF8EB" font-size="16px" line-height="26px" />
     </mj-attributes>
     <mj-style>
       @media only screen and (max-width: 600px) {
-        .body-text {
-          font-size: 17px !important;
-          line-height: 28px !important;
-        }
+      .body-text {
+      font-size: 17px !important;
+      line-height: 28px !important;
+      }
 
-        .footer-text {
-          font-size: 12px !important;
-        }
+      .footer-text {
+      font-size: 12px !important;
+      }
       }
     </mj-style>
   </mj-head>
   <mj-body background-color="#000000" width="560px">
-    <mj-section padding="52px 48px 8px" background-color="#000000">
+    <mj-section padding="52px 20px 8px" background-color="#000000">
       <mj-column padding="0">
+
         <mj-image src="logo.png" style="width: 100%;" alt="MASii" padding="0" />
+
       </mj-column>
     </mj-section>
 
-    <mj-section padding="24px 48px 0" background-color="#000000">
+    <mj-section padding="40px 20px 0" background-color="#000000">
       <mj-column padding="0">
-        <mj-divider border-color="rgba(210,203,254,0.12)" border-width="1px" padding="0" />
-      </mj-column>
-    </mj-section>
 
-    <mj-section padding="40px 48px 0" background-color="#000000">
-      <mj-column padding="0">
         <mj-text padding="0 0 28px 0" font-family="'Manrope', -apple-system, 'Segoe UI', Arial, Helvetica, sans-serif" font-size="15px" font-weight="700" color="rgba(210,203,254,0.55)" letter-spacing="0.1em" text-transform="uppercase" line-height="1">
           Hey {firstName},
         </mj-text>
@@ -63,21 +61,26 @@
         <mj-text padding="0" font-family="'Manrope', -apple-system, 'Segoe UI', Arial, Helvetica, sans-serif" font-size="22px" font-weight="700" color="#CDFC8A" letter-spacing="0.01em" line-height="1.35">
           You're in before most people<br />even know we exist.
         </mj-text>
+
       </mj-column>
     </mj-section>
 
     <mj-section padding="40px 48px 0" background-color="#000000">
       <mj-column padding="0">
+
         <mj-divider border-color="rgba(210,203,254,0.12)" border-width="1px" padding="0" />
+
       </mj-column>
     </mj-section>
 
-    <mj-section padding="28px 48px 48px" background-color="#000000">
+    <mj-section padding="28px 20px 48px" background-color="#000000">
       <mj-column padding="0">
+
         <mj-text css-class="footer-text" align="center" padding="0" font-size="12px" line-height="18px" color="rgba(210,203,254,0.18)">
           You're receiving this because you joined the waitlist.<br />
           <a href="{unsubscribe_link}" style="color:rgba(210,203,254,0.28);text-decoration:underline;">Unsubscribe</a>
         </mj-text>
+
       </mj-column>
     </mj-section>
   </mj-body>
