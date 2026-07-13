@@ -338,6 +338,17 @@
         row.style.display = "none";
       }
     }
+    // True when the worker/Loops response means the email is already signed up.
+    // Handles both the updated worker ({error:"email_exists"}) and the current
+    // one ({error:"Loops error", detail:"...already in your audience..."}).
+    function isDuplicateEmail(payload) {
+      if (!payload) return false;
+      if (payload.error === "email_exists" || payload.code === "email_exists") return true;
+      var blob = [payload.message, payload.detail]
+        .map(function (x) { return typeof x === "string" ? x : JSON.stringify(x || ""); })
+        .join(" ");
+      return /already/i.test(blob) && /audience|email|contact/i.test(blob);
+    }
     form.addEventListener("input", function (e) {
       if (e.target.name) setErr(e.target.name, null);
       if (formError) formError.style.display = "none";
@@ -368,11 +379,24 @@
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ name: name, email: email, phone: phone })
         });
-        if (!res.ok) throw new Error("Signup failed: " + res.status);
-        // Success — swap form/intro for the confirmation state.
-        form.style.display = "none";
-        document.getElementById("ea-intro").style.display = "none";
-        document.getElementById("ea-success").style.display = "block";
+        if (res.ok) {
+          // Success — swap form/intro for the confirmation state.
+          form.style.display = "none";
+          document.getElementById("ea-intro").style.display = "none";
+          document.getElementById("ea-success").style.display = "block";
+          return;
+        }
+        // Non-OK: inspect the body so we can special-case an already-registered email.
+        var payload = null;
+        try { payload = await res.json(); } catch (e) {}
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalLabel;
+        if (res.status === 409 || isDuplicateEmail(payload)) {
+          setErr("email", "This email is already registered.");
+          form.elements.email.focus();
+          return;
+        }
+        if (formError) formError.style.display = "block";
       } catch (err) {
         submitBtn.disabled = false;
         submitBtn.textContent = originalLabel;
