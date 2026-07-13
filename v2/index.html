@@ -300,8 +300,8 @@
           </span>
         </label>
         <label class="flex flex-col gap-1.5">
-          <span class="text-xs font-semibold" style="color: rgba(16,16,16,0.65)">Phone</span>
-          <input name="phone" type="tel" placeholder="+1 (555) 000-0000" required="" autocomplete="tel" class="glass-input rounded-lg px-4 py-3.5 text-base outline-none" style="color: #101010">
+          <span class="text-xs font-semibold" style="color: rgba(16,16,16,0.65)">Phone <span style="font-weight: 400; opacity: 0.65">(optional)</span></span>
+          <input name="phone" type="tel" placeholder="+1 (555) 000-0000" autocomplete="tel" class="glass-input rounded-lg px-4 py-3.5 text-base outline-none" style="color: #101010">
           <span id="err-phone" class="items-center gap-1.5 text-xs font-medium" style="display: none; color: #EF3F1D">
             <span class="material-symbols-rounded" aria-hidden="true" style="font-size: 14px; line-height: 1">error</span>
             <span class="err-msg"></span>
@@ -350,7 +350,7 @@
       var errs = {
         name: !name ? "Enter your name." : null,
         email: !email ? "Enter your email address." : !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ? "Enter a valid email address." : null,
-        phone: !phone ? "Enter your phone number." : phone.replace(/\D/g, "").length < 7 ? "Enter a valid phone number." : null
+        phone: phone && phone.replace(/\D/g, "").length < 7 ? "Enter a valid phone number." : null
       };
       setErr("name", errs.name);
       setErr("email", errs.email);
