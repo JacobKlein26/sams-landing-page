@@ -198,6 +198,86 @@
     );
   }
 
+  /* Background video — muted, loops, replays from the start when it ends (dark theme only) */
+  function BackgroundVideo({ src }) {
+    return React.createElement("video", {
+      autoPlay: true, preload: "metadata", muted: true, loop: true, playsInline: true,
+      className: "absolute inset-0 w-full h-full object-cover",
+      style: { filter: "saturate(1.15)" },
+      src: src
+    });
+  }
+
+  /* Desaturation overlay with an inverse spotlight mask — backdrop stays in color under the cursor */
+  const SPOTLIGHT_R = 520;
+  function DesatSpotlight({ mouseRef }) {
+    const internalRef = useRef({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
+    const mr = mouseRef || internalRef;
+    useEffect(() => {
+      if (mouseRef) return;
+      const onMove = (e) => { internalRef.current.x = e.clientX; internalRef.current.y = e.clientY; };
+      window.addEventListener("mousemove", onMove);
+      return () => window.removeEventListener("mousemove", onMove);
+    }, [mouseRef]);
+    const canvasRef = useRef(null);
+    const layerRef = useRef(null);
+    useEffect(() => {
+      const c = canvasRef.current;
+      const layer = layerRef.current;
+      if (!c || !layer) return;
+      const ctx = c.getContext("2d");
+      const SCALE = 0.4; // mask is a soft gradient — low-res keeps toDataURL cheap
+      const smooth = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+      let raf = 0;
+      const resize = () => {
+        c.width = Math.max(1, Math.round(window.innerWidth * SCALE));
+        c.height = Math.max(1, Math.round(window.innerHeight * SCALE));
+      };
+      resize();
+      window.addEventListener("resize", resize);
+      layer.style.maskSize = "100% 100%";
+      layer.style.webkitMaskSize = "100% 100%";
+      layer.style.maskRepeat = "no-repeat";
+      layer.style.webkitMaskRepeat = "no-repeat";
+      const r = SPOTLIGHT_R * SCALE;
+      const draw = () => {
+        smooth.x += (mr.current.x - smooth.x) * 0.1;
+        smooth.y += (mr.current.y - smooth.y) * 0.1;
+        const x = smooth.x * SCALE, y = smooth.y * SCALE;
+        // opaque everywhere (desaturated), soft transparent hole under the cursor (color)
+        ctx.globalCompositeOperation = "source-over";
+        ctx.fillStyle = "#fff";
+        ctx.fillRect(0, 0, c.width, c.height);
+        ctx.globalCompositeOperation = "destination-out";
+        const g = ctx.createRadialGradient(x, y, 0, x, y, r);
+        g.addColorStop(0, "rgba(255,255,255,1)");
+        g.addColorStop(0.18, "rgba(255,255,255,1)");
+        g.addColorStop(0.38, "rgba(255,255,255,0.72)");
+        g.addColorStop(0.55, "rgba(255,255,255,0.45)");
+        g.addColorStop(0.72, "rgba(255,255,255,0.22)");
+        g.addColorStop(0.86, "rgba(255,255,255,0.08)");
+        g.addColorStop(1, "rgba(255,255,255,0)");
+        ctx.fillStyle = g;
+        ctx.beginPath();
+        ctx.arc(x, y, r, 0, Math.PI * 2);
+        ctx.fill();
+        const url = c.toDataURL();
+        layer.style.maskImage = "url(" + url + ")";
+        layer.style.webkitMaskImage = "url(" + url + ")";
+        raf = requestAnimationFrame(draw);
+      };
+      draw();
+      return () => { cancelAnimationFrame(raf); window.removeEventListener("resize", resize); };
+    }, [mr]);
+    return React.createElement(React.Fragment, null,
+      React.createElement("canvas", { ref: canvasRef, className: "absolute inset-0 pointer-events-none", style: { display: "none" } }),
+      React.createElement("div", { ref: layerRef, className: "absolute inset-0 z-0 pointer-events-none",
+        style: { WebkitBackdropFilter: "saturate(0.35)", backdropFilter: "saturate(0.35)" } })
+    );
+  }
+
   window.RotatingHeadline = RotatingHeadline;
   window.GlassCursor = GlassCursor;
+  window.BackgroundVideo = BackgroundVideo;
+  window.DesatSpotlight = DesatSpotlight;
 })();

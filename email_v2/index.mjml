@@ -1,0 +1,86 @@
+<mjml>
+  <mj-head>
+    <mj-title>You're on the list - MASii</mj-title>
+    <mj-preview>You're in before most people even know we exist.</mj-preview>
+    <mj-font name="Manrope" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700&display=swap" />
+    <mj-font name="Instrument Sans" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@600;700&display=swap" />
+    <mj-attributes>
+      <mj-all font-family="'Manrope', -apple-system, 'Segoe UI', Arial, Helvetica, sans-serif" />
+
+      <mj-text color="#101010" font-size="16px" line-height="26px" />
+    </mj-attributes>
+    <mj-style>
+      .card > table, .card > div { box-shadow: 0 20px 60px rgba(16, 16, 16, 0.12); }
+
+      @media only screen and (max-width: 600px) {
+      .body-text {
+      font-size: 17px !important;
+      line-height: 28px !important;
+      }
+
+      .footer-text {
+      font-size: 12px !important;
+      }
+      }
+    </mj-style>
+  </mj-head>
+  <mj-body background-color="#EDEFF7" width="580px">
+    <mj-wrapper background-url="bg.jpg" background-size="cover" background-repeat="no-repeat" background-color="#EDEFF7" padding="36px 22px 40px">
+
+      <!-- Logo (floats on the gradient) -->
+      <mj-section padding="8px 4px 26px" background-color="transparent">
+        <mj-column padding="0">
+          <mj-image src="logo.png" width="188px" align="left" alt="MASii" padding="0" />
+        </mj-column>
+      </mj-section>
+
+      <!-- Message card -->
+      <mj-section css-class="card" background-color="#FFFFFF" border-radius="24px" padding="38px 30px 42px">
+        <mj-column padding="0">
+
+          <mj-text padding="0 0 18px 0" font-family="'Manrope', -apple-system, 'Segoe UI', Arial, Helvetica, sans-serif" font-size="14px" font-weight="700" color="rgba(16,16,16,0.45)" letter-spacing="0.12em" text-transform="uppercase" line-height="1">
+            Hey {firstName},
+          </mj-text>
+
+          <mj-image src="accent.png" width="60px" align="left" alt="" padding="0 0 20px 0" />
+
+          <mj-text padding="0 0 26px 0" font-family="'Instrument Sans', 'Manrope', -apple-system, 'Segoe UI', Arial, Helvetica, sans-serif" font-size="34px" font-weight="700" color="#101010" letter-spacing="-0.01em" line-height="1.15">
+            You're officially<br />on the list.
+          </mj-text>
+
+          <mj-text css-class="body-text" padding="0 0 18px 0" color="rgba(16,16,16,0.72)">
+            Something big is coming.
+          </mj-text>
+
+          <mj-text css-class="body-text" padding="0 0 18px 0" color="rgba(16,16,16,0.72)">
+            A new way to turn everyday actions into rewards, experiences and real-world impact.
+          </mj-text>
+
+          <mj-text css-class="body-text" padding="0 0 18px 0" color="rgba(16,16,16,0.72)">
+            Over the next few weeks we'll be sharing early updates, behind-the-scenes access and a few surprises before launch.
+          </mj-text>
+
+          <mj-text css-class="body-text" padding="0 0 30px 0" color="rgba(16,16,16,0.72)">
+            For now, sit tight.
+          </mj-text>
+
+          <mj-text padding="0" font-family="'Manrope', -apple-system, 'Segoe UI', Arial, Helvetica, sans-serif" font-size="20px" font-weight="700" color="#4041E5" letter-spacing="0" line-height="1.35">
+            You're in before most people<br />even know we exist.
+          </mj-text>
+
+        </mj-column>
+      </mj-section>
+
+      <!-- Footer (floats on the gradient) -->
+      <mj-section padding="26px 12px 4px" background-color="transparent">
+        <mj-column padding="0">
+          <mj-text css-class="footer-text" align="center" padding="0" font-size="12px" line-height="18px" color="rgba(16,16,16,0.45)">
+            You're receiving this because you joined the waitlist.<br />
+            <a href="{unsubscribe_link}" style="color:rgba(16,16,16,0.6);text-decoration:underline;">Unsubscribe</a>
+          </mj-text>
+        </mj-column>
+      </mj-section>
+
+    </mj-wrapper>
+  </mj-body>
+</mjml>
